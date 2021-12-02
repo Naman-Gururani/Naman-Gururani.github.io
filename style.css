@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    font-size: 25px;
+    color: aqua;
+}
+
+img {
+    width: 300px;
+    height: auto;
+}

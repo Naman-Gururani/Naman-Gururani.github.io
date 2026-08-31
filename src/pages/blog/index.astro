@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<Base
+  title="The Library — Naman's World"
+  description="Naman Gururani's blog: streaming data, exactly-once pipelines, marketplaces, and building things end to end."
+  current="blog"
+>
+  <p class="label">the library</p>
+  <h1 class="pixel" style="font-size: clamp(1.1rem, 3.5vw, 1.7rem); margin: 0.6rem 0 0.4rem;">FIELD NOTES</h1>
+  <p class="ui" style="max-width: 52ch; color: var(--muted); margin-top: 0.4rem;">
+    Longer writing about the systems I build — data pipelines by day, marketplaces and worlds by night.
+    Subscribe via <a href="/rss.xml">RSS</a>.
+  </p>
+
+  <ul class="posts">
+    {posts.map((post) => (
+      <li class="post-card frame-sm">
+        <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
+        <p class="meta">
+          {fmt(post.data.pubDate)}
+          {post.data.tags.map((t) => <span class="tagchip">{t}</span>)}
+        </p>
+        <p class="desc">{post.data.description}</p>
+      </li>
+    ))}
+  </ul>
+</Base>

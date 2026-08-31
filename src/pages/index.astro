@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<Base
+  title="Naman's World — Naman Gururani"
+  description="Naman Gururani — data engineer (payments & streaming). A pixel hub for the playable portfolio, the blog, and what I'm building."
+  current="home"
+>
+  <section class="hero">
+    <p class="label">index of an island</p>
+    <h1>NAMAN'S <span class="accent">WORLD</span></h1>
+    <p class="tag ui">
+      I'm Naman — a data engineer who works on payments and streaming systems, and builds
+      marketplaces and small worlds after hours. My portfolio is a game you can walk around.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="/lineage/">▶ PLAY THE PORTFOLIO</a>
+      <a class="btn" href="/blog/">READ THE BLOG</a>
+    </div>
+  </section>
+
+  <section class="doors" aria-label="Places">
+    <a class="door frame-sm" href="/lineage/">
+      <span class="glyph">🏝️</span>
+      <h3>The Island</h3>
+      <p>An explorable pixel-art portfolio — day/night, quests, collectibles. Walk it, or skip straight to the good parts.</p>
+      <span class="label">portfolio</span>
+    </a>
+    <a class="door frame-sm" href="/blog/">
+      <span class="glyph">📖</span>
+      <h3>The Library</h3>
+      <p>Field notes on streaming data, exactly-once pipelines, marketplaces, and building things end to end.</p>
+      <span class="label">blog</span>
+    </a>
+    <a class="door frame-sm" href="https://github.com/naman-gururani">
+      <span class="glyph">⚒️</span>
+      <h3>The Forge</h3>
+      <p>Where the code lives. Some quests are public and polished; more are on the way.</p>
+      <span class="label">github</span>
+    </a>
+    <a class="door frame-sm" href="https://enlacey.com">
+      <span class="glyph">🛺</span>
+      <h3>Enlacey</h3>
+      <p>"There's always a guy who knows a guy. Now there's an app." A services marketplace for Haldwani — launching soon.</p>
+      <span class="label">startup</span>
+    </a>
+  </section>
+
+  {posts.length > 0 && (
+    <section aria-label="Latest posts" style="margin-top: 3rem;">
+      <h2 class="head" style="font-size:1.5rem;">Fresh from the Library</h2>
+      <ul class="posts">
+        {posts.map((post) => (
+          <li class="post-card frame-sm">
+            <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <p class="meta">{fmt(post.data.pubDate)}</p>
+            <p class="desc">{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

@@ -1,9 +1,9 @@
 # naman-gururani.github.io
 
-The hub + blog for **Naman's World** — front page at the root, field notes under `/blog/`, and the playable portfolio living separately at [`/portfolio/`](https://naman-gururani.github.io/portfolio/). Design language inherited from Lineage Isle: its palette, pixel frames, and day/night cycle (☾ toggle).
+The hub + blog for **Naman's World** — front page at the root, field notes under `/blog/`, and the playable portfolio living separately at [`/portfolio/`](https://naman-gururani.github.io/portfolio/). Design system is Printstream (Monochrome Pearlescence): matte black / stark white skins with a holographic accent and chamfered technical cards, toggled by the ◧/◨ button in the header.
 
 ## Stack
-Astro 7 · content collections (markdown in `src/content/blog/`) · `@astrojs/rss` + sitemap · Fontsource (Press Start 2P, Pixelify Sans, Fredoka, Inter) · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
+Astro 7 · content collections (markdown in `src/content/blog/`) · `@astrojs/rss` + sitemap · Fontsource (Geist Sans, Inter, JetBrains Mono) · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 
 ## Local dev
 ```bash

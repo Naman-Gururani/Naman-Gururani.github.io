@@ -1,60 +1,68 @@
 /* ============================================================
-   NAMAN'S WORLD — hub + blog
-   Design language inherited from Lineage Isle (src/art/palette.ts):
-   ink #1b1a2e · cream #f6e7c9 · white #fdfbf4 · teal #31c7b3 ·
-   yellow #ffd23f · sky #2b7fc0 — with the game's layered pixel frame.
-   Theme = the island's day/night cycle. Day is the :root default;
-   night applies via prefers-color-scheme (unless day is forced) or
-   an explicit [data-theme="night"].
+   NAMAN GURURANI — Printstream
+   Monochrome Pearlescence: matte black and stark white, with a
+   holographic accent reserved for interactive states. Two skins,
+   both deliberate — black is the default, white is the flip.
+   Tokens copied from DESIGN.md; do not eyeball new ones.
    ============================================================ */
-
-:root {
-  --bg: #f6e7c9;            /* cream — day sand/paper        */
-  --bg-2: #efdcb4;          /* slightly deeper ground        */
-  --surface: #fdfbf4;       /* card/paper                    */
-  --text: #1b1a2e;          /* ink                           */
-  --heading: #1b1a2e;
-  --muted: #5a5878;
-  --accent: #1f8f81;        /* teal, dark enough on cream    */
-  --accent-2: #b07f0e;      /* yellow-dark for small labels  */
-  --link: #1f5f9c;          /* deep water                    */
-  --frame-ink: #1b1a2e;
-  --frame-mid: #e4cfa6;     /* cream-2                       */
-  --card-shadow: rgba(20, 30, 40, 0.18);
-  --hr: #d8c39c;
+:root,
+:root[data-theme='black'] {
+  --bg: #141313;
+  --bg-2: #0e0e0e;
+  --surface: #201f1f;
+  --surface-hi: #2a2a2a;
+  --text: #e5e2e1;
+  --heading: #ffffff;
+  --muted: #c4c7c8;
+  --outline: #444748;
+  --outline-strong: #8e9192;
+  --invert-bg: #e5e2e1;
+  --invert-text: #1c1b1b;
+  --holo-1: #a9e8ff;
+  --holo-2: #d9bcff;
+  --holo-3: #fcd6ff;
+  --holo: linear-gradient(90deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-1));
+  --font-head: 'Geist Sans', system-ui, sans-serif;
+  --font-body: Inter, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --chamfer: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='day']) {
-    --bg: #14132a;
-    --bg-2: #100f22;
-    --surface: #201e3e;
-    --text: #f6e7c9;
-    --heading: #fdfbf4;
-    --muted: #a5a1c8;
-    --accent: #31c7b3;
-    --accent-2: #ffd23f;
-    --link: #67c4ee;
-    --frame-ink: #0d0c1c;
-    --frame-mid: #3d3b5c;
-    --card-shadow: rgba(0, 0, 0, 0.45);
-    --hr: #33305c;
+:root[data-theme='white'] {
+  --bg: #f4f4f4;
+  --bg-2: #ffffff;
+  --surface: #ffffff;
+  --surface-hi: #e2e2e2;
+  --text: #1c1b1b;
+  --heading: #121212;
+  --muted: #454747;
+  --outline: #c4c7c8;
+  --outline-strong: #636565;
+  --invert-bg: #141313;
+  --invert-text: #e5e2e1;
+  --holo-1: #2aa7d0;
+  --holo-2: #7d4bd0;
+  --holo-3: #b23fc4;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='black']):not([data-theme='white']) {
+    /* Same overrides as [data-theme='white'] — copied, not @extended. */
+    --bg: #f4f4f4;
+    --bg-2: #ffffff;
+    --surface: #ffffff;
+    --surface-hi: #e2e2e2;
+    --text: #1c1b1b;
+    --heading: #121212;
+    --muted: #454747;
+    --outline: #c4c7c8;
+    --outline-strong: #636565;
+    --invert-bg: #141313;
+    --invert-text: #e5e2e1;
+    --holo-1: #2aa7d0;
+    --holo-2: #7d4bd0;
+    --holo-3: #b23fc4;
   }
-}
-:root[data-theme='night'] {
-  --bg: #14132a;
-  --bg-2: #100f22;
-  --surface: #201e3e;
-  --text: #f6e7c9;
-  --heading: #fdfbf4;
-  --muted: #a5a1c8;
-  --accent: #31c7b3;
-  --accent-2: #ffd23f;
-  --link: #67c4ee;
-  --frame-ink: #0d0c1c;
-  --frame-mid: #3d3b5c;
-  --card-shadow: rgba(0, 0, 0, 0.45);
-  --hr: #33305c;
 }
 
 * { box-sizing: border-box; }

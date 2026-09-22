@@ -40,7 +40,11 @@
   --outline-strong: #636565;
   --invert-bg: #141313;
   --invert-text: #e5e2e1;
-  --holo-1: #2aa7d0;
+  /* Darkened from DESIGN.md's #2aa7d0 — that stop measured 2.53:1 against
+     this skin's --bg, below the 3:1 large-text floor the hero sheen needs.
+     #248fb2 keeps the same hue/saturation and measures 3.38:1. --holo-2
+     (5.04:1) and --holo-3 (4.34:1) already cleared 3:1 and are unchanged. */
+  --holo-1: #248fb2;
   --holo-2: #7d4bd0;
   --holo-3: #b23fc4;
 }
@@ -59,7 +63,8 @@
     --outline-strong: #636565;
     --invert-bg: #141313;
     --invert-text: #e5e2e1;
-    --holo-1: #2aa7d0;
+    /* Kept in sync with [data-theme='white'] — see the comment there. */
+    --holo-1: #248fb2;
     --holo-2: #7d4bd0;
     --holo-3: #b23fc4;
   }

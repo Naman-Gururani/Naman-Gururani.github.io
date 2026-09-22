@@ -17,7 +17,7 @@ Every sprite and tile on the island is drawn procedurally from a single named pa
 
 That constraint did more for the game's look than any artistic skill I have. When every building, tree, and villager pulls from the same forty-odd colours, the world can't help but feel coherent. It also made iteration absurdly fast: change `waterDeep` once and every wave, shallow, and reflection on the island updates.
 
-If you're an engineer who "can't do design," this is the cheat code: don't pick colours per element. Pick a palette, name the entries by what they mean, and force everything through it. (The blog you're reading inherits the same palette — cream and ink by day, the island's night colours after dark. Try the ☾ button in the corner.)
+If you're an engineer who "can't do design," this is the cheat code: don't pick colours per element. Pick a palette, name the entries by what they mean, and force everything through it. (The blog you're reading inherits the same palette — cream and ink by day, the island's night colours after dark. Try the skin toggle in the corner.)
 
 ## The Skip button is the most important feature
 

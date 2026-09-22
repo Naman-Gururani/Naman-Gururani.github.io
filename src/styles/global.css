@@ -8,7 +8,6 @@
 :root,
 :root[data-theme='black'] {
   --bg: #141313;
-  --bg-2: #0e0e0e;
   --surface: #201f1f;
   --surface-hi: #2a2a2a;
   --text: #e5e2e1;
@@ -25,12 +24,18 @@
   --font-head: 'Geist Sans', system-ui, sans-serif;
   --font-body: Inter, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --chamfer: 10px;
+  /* The chamfer scale: one cut per control size. Every clip-path below
+     reads from these — no hand-typed corner sizes. */
+  --chamfer: 10px;      /* buttons */
+  --chamfer-lg: 14px;   /* cards */
+  --chamfer-sm: 7px;    /* the 36px toggle */
+  /* The skin is forced, so the native UI (scrollbars, form controls) is
+     told which one is on rather than left to read the OS preference. */
+  color-scheme: dark;
 }
 
 :root[data-theme='white'] {
   --bg: #f4f4f4;
-  --bg-2: #ffffff;
   --surface: #ffffff;
   --surface-hi: #e2e2e2;
   --text: #1c1b1b;
@@ -47,13 +52,13 @@
   --holo-1: #248fb2;
   --holo-2: #7d4bd0;
   --holo-3: #b23fc4;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='black']):not([data-theme='white']) {
     /* Same overrides as [data-theme='white'] — copied, not @extended. */
     --bg: #f4f4f4;
-    --bg-2: #ffffff;
     --surface: #ffffff;
     --surface-hi: #e2e2e2;
     --text: #1c1b1b;
@@ -67,6 +72,7 @@
     --holo-1: #248fb2;
     --holo-2: #7d4bd0;
     --holo-3: #b23fc4;
+    color-scheme: light;
   }
 }
 
@@ -87,6 +93,10 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
+  /* A column so a short route (/blog/, /404) pins its footer to the
+     bottom instead of leaving it adrift over empty dot-grid. */
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg);
   /* A machined dot grid on the lowest layer — micro-detail, not texture. */
   background-image: radial-gradient(
@@ -179,7 +189,8 @@ a:hover { color: var(--heading); text-decoration-color: currentColor; }
   padding: 0 48px;
 }
 
-main { padding: clamp(1.75rem, 4vw, 2.75rem) 0 1rem; }
+/* Grows to fill a short page; never shrinks below its content on a long one. */
+main { flex: 1 0 auto; padding: clamp(1.75rem, 4vw, 2.75rem) 0 1rem; }
 
 /* ============================================================
    HEADER
@@ -260,7 +271,7 @@ nav.top a[aria-current='page']::after { transform: scaleX(1); }
   background: transparent;
   border: 1px solid var(--outline-strong);
   cursor: pointer;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chamfer-sm)), calc(100% - var(--chamfer-sm)) 100%, 0 100%);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 #theme-toggle:hover { color: var(--heading); border-color: var(--heading); }
@@ -364,7 +375,7 @@ footer.site .made { margin-left: auto; }
   border: 1px solid var(--outline);
   background: var(--surface);
   padding: 1.5rem;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chamfer-lg)), calc(100% - var(--chamfer-lg)) 100%, 0 100%);
 }
 .card .serial {
   position: absolute;
@@ -653,6 +664,25 @@ article.post .meta {
   line-height: 1.55;
 }
 .prose pre code { background: none; border: 0; padding: 0; font-size: 0.86rem; }
+
+/* Every highlighted token ships both skins' colours as custom properties and
+   no baked-in colour, so the same three-state rule that chooses the token set
+   at the top of this file chooses which one gets painted. The block's own
+   background stays var(--surface) — a code block is a surface like any other,
+   not a slab of someone else's theme. */
+.prose .astro-code,
+.prose .astro-code span { color: var(--shiki-dark); }
+
+:root[data-theme='white'] .prose .astro-code,
+:root[data-theme='white'] .prose .astro-code span { color: var(--shiki-light); }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='black']):not([data-theme='white']) .prose .astro-code,
+  :root:not([data-theme='black']):not([data-theme='white']) .prose .astro-code span {
+    color: var(--shiki-light);
+  }
+}
+
 .prose hr { border: 0; border-top: 1px solid var(--outline); margin: 2.4rem 0; }
 
 /* Tables get the same scroll-containment as code: the table itself becomes

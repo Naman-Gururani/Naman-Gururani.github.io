@@ -65,252 +65,603 @@
   }
 }
 
-* { box-sizing: border-box; }
+/* ============================================================
+   RESET & CANVAS
+   Flat, expansive surfaces. Depth comes from tonal layers and
+   hairlines, never from soft shadows.
+   ============================================================ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
 html {
   background: var(--bg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
+  /* A machined dot grid on the lowest layer — micro-detail, not texture. */
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--outline) 55%, var(--bg)) 1px,
+    transparent 1px
+  );
+  background-size: 44px 44px;
+  background-position: -1px -1px;
   color: var(--text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- the game's layered pixel frame ------------------------- */
-.frame {
-  background: var(--surface);
-  box-shadow:
-    0 0 0 3px var(--frame-ink),
-    0 0 0 6px var(--frame-mid),
-    0 0 0 9px var(--frame-ink),
-    0 14px 0 9px var(--card-shadow);
-  border-radius: 2px;
-}
-.frame-sm {
-  background: var(--surface);
-  box-shadow:
-    0 0 0 2px var(--frame-ink),
-    0 0 0 4px var(--frame-mid),
-    0 0 0 6px var(--frame-ink),
-    0 8px 0 6px var(--card-shadow);
-  border-radius: 2px;
-}
-
-/* --- type roles --------------------------------------------- */
-.pixel {
-  font-family: 'Press Start 2P', monospace;
-  line-height: 1.7;
-  letter-spacing: 0.02em;
-}
+/* ============================================================
+   TYPE ROLES
+   Geist for headlines (tight tracking), Inter for prose,
+   JetBrains Mono for anything that reads as machine output.
+   ============================================================ */
 h1, h2, h3, .head {
-  font-family: 'Pixelify Sans', 'Fredoka', sans-serif;
+  font-family: var(--font-head);
   color: var(--heading);
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
-.ui {
-  font-family: 'Fredoka', system-ui, sans-serif;
-}
-.label {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
+h2, h3 { font-weight: 600; font-size: 1.5rem; letter-spacing: -0.01em; }
+
+.ui { font-family: var(--font-body); }
+
+/* Formerly the arcade face; now the technical display face. */
+.pixel {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
   text-transform: uppercase;
-  color: var(--accent-2);
 }
 
-a { color: var(--link); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-a:hover { color: var(--accent); }
-a:focus-visible, button:focus-visible {
-  outline: 3px solid var(--accent);
+/* The unit label: mono, tracked wide, with a holographic status pip. */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.label::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  background-image: var(--holo);
+}
+
+/* ============================================================
+   LINKS & FOCUS
+   Chamfers are cut with clip-path, which slices an outline ring
+   clean off. Anything clipped draws its focus ring INSIDE.
+   ============================================================ */
+a {
+  color: var(--text);
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--outline-strong);
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--heading); text-decoration-color: currentColor; }
+
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--holo-2);
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
-/* --- layout -------------------------------------------------- */
-.wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
+/* ============================================================
+   LAYOUT
+   1280 max, 48px desktop margins, 16px on mobile.
+   ============================================================ */
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
 
+main { padding: clamp(1.75rem, 4vw, 2.75rem) 0 1rem; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
 header.site {
-  padding: 1.6rem 0 0.9rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--outline);
 }
 header.site .bar {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  min-height: 68px;
   flex-wrap: wrap;
 }
+
 .brand {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--heading);
   text-decoration: none;
 }
-.brand:hover { color: var(--accent); }
-nav.top { margin-left: auto; display: flex; gap: 1.1rem; align-items: center; }
-nav.top a {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-  text-decoration: none;
-  color: var(--text);
+
+nav.top {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
-nav.top a:hover { color: var(--accent); }
-nav.top a[aria-current='page'] { color: var(--accent); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px; }
+nav.top a {
+  position: relative;
+  padding: 0.5rem 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+}
+nav.top a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-image: var(--holo);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.18s ease;
+}
+nav.top a:hover { color: var(--heading); }
+nav.top a[aria-current='page'] { color: var(--heading); }
+nav.top a:hover::after,
+nav.top a:focus-visible::after,
+nav.top a[aria-current='page']::after { transform: scaleX(1); }
 
 #theme-toggle {
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 16px;
   line-height: 1;
-  background: var(--surface);
   color: var(--text);
-  border: 2px solid var(--frame-ink);
-  border-radius: 2px;
-  padding: 0.35rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--outline-strong);
   cursor: pointer;
-  box-shadow: 0 2px 0 0 var(--frame-ink);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
-#theme-toggle:active { transform: translateY(2px); box-shadow: none; }
+#theme-toggle:hover { color: var(--heading); border-color: var(--heading); }
+#theme-toggle:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--holo-2);
+}
 
-main { padding: 2.2rem 0 3rem; }
-
+/* ============================================================
+   FOOTER
+   ============================================================ */
 footer.site {
-  border-top: 3px solid var(--frame-ink);
-  padding: 1.4rem 0 2.2rem;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
+  margin-top: clamp(3rem, 8vw, 6rem);
+  border-top: 1px solid var(--outline);
+  padding: 1.5rem 0 2.6rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
 }
-footer.site .wrap { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: baseline; }
-footer.site a { color: var(--muted); }
-footer.site a:hover { color: var(--accent); }
-
-/* --- hub ------------------------------------------------------ */
-.hero { padding: 2.5rem 0 1rem; }
-.hero h1 {
-  font-family: 'Press Start 2P', monospace;
-  font-size: clamp(1.3rem, 4.5vw, 2.4rem);
-  line-height: 1.5;
-  margin: 0 0 1rem;
-  color: var(--heading);
+footer.site .wrap {
+  display: flex;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
-.hero h1 .accent { color: var(--accent); }
-.hero p.tag {
-  font-family: 'Fredoka', sans-serif;
-  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
-  max-width: 46ch;
-  margin: 0 0 1.6rem;
-  color: var(--text);
-}
-.cta-row { display: flex; gap: 1.4rem; flex-wrap: wrap; margin: 1.8rem 0 0.6rem; }
-.btn {
-  display: inline-block;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.68rem;
-  padding: 0.95rem 1.2rem;
-  color: var(--heading);
-  background: var(--surface);
+footer.site a {
+  color: var(--muted);
   text-decoration: none;
-  box-shadow:
-    0 0 0 2px var(--frame-ink),
-    0 0 0 4px var(--frame-mid),
-    0 0 0 6px var(--frame-ink),
-    0 8px 0 6px var(--card-shadow);
-  border-radius: 2px;
+  border-bottom: 1px solid var(--outline);
+  padding-bottom: 2px;
 }
-.btn.primary { background: var(--accent); color: #0d0c1c; }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(1px); }
+footer.site a:hover { color: var(--heading); border-bottom-color: var(--heading); }
+footer.site .made { margin-left: auto; }
 
+/* ============================================================
+   PRIMITIVES — buttons
+   Primary: stark white block, black text, one corner machined off.
+   ============================================================ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.4rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--outline-strong);
+  color: var(--text);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%);
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background-image: var(--holo);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s ease;
+}
+.btn:hover { color: var(--heading); border-color: var(--heading); }
+.btn:hover::before { transform: scaleX(1); }
+
+.btn.primary {
+  background: var(--invert-bg);
+  color: var(--invert-text);
+  border: 0;
+}
+.btn.primary:hover { background: var(--invert-bg); color: var(--invert-text); }
+
+/* The clip cuts a focus ring off, so focus is drawn inside the shape. */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--holo-2);
+}
+/* On the inverted block a pale holo ring would vanish — anchor it first. */
+.btn.primary:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--invert-text), inset 0 0 0 5px var(--holo-2);
+}
+
+/* ============================================================
+   PRIMITIVES — cards
+   Hairline box, chamfered bottom-right, serial number top-right,
+   a small decal, and a holographic rail that arms on hover.
+   ============================================================ */
+.card {
+  position: relative;
+  border: 1px solid var(--outline);
+  background: var(--surface);
+  padding: 1.5rem;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+.card .serial {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background-image: var(--holo);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s ease;
+}
+.card:hover::before,
+.card:focus-visible::before { transform: scaleX(1); }
+.card::after {
+  content: '\2715';
+  position: absolute;
+  right: 1.15rem;
+  bottom: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  color: var(--outline-strong);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  padding: clamp(0.5rem, 3vw, 2rem) 0 clamp(2.2rem, 5vw, 3.5rem);
+  border-bottom: 1px solid var(--outline);
+}
+.hero h1 {
+  margin: 1.1rem 0 1.3rem;
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  max-width: 16ch;
+  overflow-wrap: break-word;
+}
+.hero h1 .accent {
+  background-image: var(--holo);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: sheen 9s linear infinite;
+}
+@keyframes sheen { to { background-position: 300% 0; } }
+
+.hero p.tag {
+  margin: 0;
+  max-width: 54ch;
+  font-family: var(--font-body);
+  font-size: clamp(1.02rem, 1.4vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 0;
+}
+
+/* ============================================================
+   THE FOUR DOORS
+   ============================================================ */
 .doors {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1.8rem;
-  margin: 2.6rem 0 0;
-  padding: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  gap: 24px;
+  margin: clamp(2rem, 5vw, 3.25rem) 0 0;
+  padding: 0;
 }
 .door {
-  display: block;
-  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 2.9rem 1.5rem 1.6rem;
   color: var(--text);
-  padding: 1.15rem 1.2rem 1.05rem;
+  text-decoration: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
 }
-.door:hover { transform: translateY(-3px); color: var(--text); }
-.door .glyph { font-size: 1.6rem; display: block; margin-bottom: 0.5rem; }
-.door h3 { margin: 0 0 0.35rem; font-size: 1.35rem; }
-.door p { margin: 0; font-size: 0.95rem; color: var(--muted); }
-.door .label { display: inline-block; margin-top: 0.6rem; }
+.door:hover {
+  background: var(--surface-hi);
+  border-color: var(--outline-strong);
+  color: var(--text);
+}
+.door h3 { margin: 0; }
+.door p { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--muted); }
+.door .label { margin-top: auto; padding-top: 0.9rem; }
+/* The decal sits on the label line, not adrift in the corner. */
+.door::after { bottom: 1.8rem; }
+.door:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--holo-2);
+}
 
-/* --- blog list ------------------------------------------------ */
-.posts { list-style: none; margin: 1.6rem 0 0; padding: 0.6rem; display: grid; gap: 1.9rem; }
-.post-card { padding: 1.2rem 1.35rem; }
-.post-card a.title {
-  font-family: 'Pixelify Sans', sans-serif;
+/* ============================================================
+   SECTION HEADS & THE POSTS LIST
+   Lists are separated by hairlines. No hover fill — a
+   holographic chevron steps out instead.
+   ============================================================ */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  font-size: 1.45rem;
+  letter-spacing: -0.01em;
+}
+.section-head::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--outline);
+}
+
+.posts {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border-top: 1px solid var(--outline);
+}
+.post-card {
+  position: relative;
+  border-bottom: 1px solid var(--outline);
+  padding: 1.4rem 2.4rem 1.4rem 0;
+}
+.post-card a.title {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
   color: var(--heading);
   text-decoration: none;
 }
-.post-card a.title:hover { color: var(--accent); }
-.post-card .meta { font-family: 'Fredoka', sans-serif; font-size: 0.88rem; color: var(--muted); margin: 0.25rem 0 0.5rem; }
-.post-card p.desc { margin: 0; color: var(--text); }
+/* The whole row is the target; the title stays the accessible name. */
+.post-card a.title::before { content: ''; position: absolute; inset: 0; }
+.post-card a.title:focus-visible { outline-offset: 4px; }
+.post-card .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.45rem 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.post-card p.desc { margin: 0; max-width: 68ch; color: var(--muted); font-size: 1rem; }
+.post-card::after {
+  content: '\203A';
+  position: absolute;
+  right: 0.3rem;
+  top: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--outline-strong);
+  transition: transform 0.18s ease;
+}
+.post-card:hover::after {
+  background-image: var(--holo);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transform: translateX(4px);
+}
 
-/* --- article -------------------------------------------------- */
+.tagchip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--outline);
+  padding: 0.32rem 0.5rem;
+}
+
+/* ============================================================
+   ARTICLE — ported so the blog stays legible; the full prose
+   pass belongs to the next task.
+   ============================================================ */
 article.post { max-width: 70ch; margin: 0 auto; }
-article.post header h1 { font-size: clamp(1.9rem, 4.5vw, 2.7rem); margin: 0.4rem 0 0.6rem; }
-article.post .meta { font-family: 'Fredoka', sans-serif; color: var(--muted); margin-bottom: 2rem; }
+article.post header h1 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); margin: 0.8rem 0 0.6rem; }
+article.post .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 2.4rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 .prose { font-size: 1.06rem; }
 .prose p { margin: 0 0 1.15rem; }
-.prose h2 { font-size: 1.6rem; margin: 2.2rem 0 0.7rem; }
+.prose h2 { font-size: 1.6rem; margin: 2.4rem 0 0.7rem; }
 .prose h3 { font-size: 1.25rem; margin: 1.8rem 0 0.5rem; }
 .prose ul, .prose ol { padding-left: 1.4rem; margin: 0 0 1.15rem; }
 .prose li { margin-bottom: 0.4rem; }
-.prose li::marker { color: var(--accent); }
+.prose li::marker { color: var(--outline-strong); }
+.prose a { color: var(--heading); }
 .prose blockquote {
-  margin: 1.4rem 0;
-  padding: 0.2rem 1.2rem;
-  border-left: 4px solid var(--accent);
+  margin: 1.6rem 0;
+  padding: 0.4rem 1.2rem;
+  border-left: 2px solid var(--outline-strong);
   background: var(--surface);
   color: var(--muted);
 }
-.prose img { max-width: 100%; border-radius: 2px; }
+.prose img { max-width: 100%; height: auto; }
 .prose code {
-  font-family: ui-monospace, 'Cascadia Code', Menlo, monospace;
-  font-size: 0.92em;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
   background: var(--surface);
-  border: 1px solid var(--hr);
+  border: 1px solid var(--outline);
   padding: 0.1em 0.35em;
-  border-radius: 3px;
 }
 .prose pre {
   padding: 1.1rem 1.2rem;
   overflow-x: auto;
-  border-radius: 2px;
-  box-shadow: 0 0 0 2px var(--frame-ink), 0 0 0 4px var(--frame-mid), 0 0 0 6px var(--frame-ink);
-  margin: 1.4rem 0.4rem 1.6rem;
+  border: 1px solid var(--outline);
+  margin: 1.5rem 0 1.7rem;
   line-height: 1.55;
 }
-.prose pre code { background: none; border: 0; padding: 0; font-size: 0.88rem; }
-.prose hr { border: 0; border-top: 3px solid var(--hr); margin: 2rem 0; }
-.backlink { display: inline-block; margin-top: 2.4rem; font-family: 'Fredoka', sans-serif; }
+.prose pre code { background: none; border: 0; padding: 0; font-size: 0.86rem; }
+.prose hr { border: 0; border-top: 1px solid var(--outline); margin: 2.4rem 0; }
 
-.tagchip {
+.backlink {
   display: inline-block;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.8rem;
-  background: var(--surface);
-  border: 2px solid var(--frame-mid);
-  padding: 0.1rem 0.55rem;
-  border-radius: 2px;
-  margin-right: 0.4rem;
-  color: var(--muted);
+  margin-top: 2.6rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--outline-strong);
+  padding-bottom: 3px;
+}
+.backlink:hover { color: var(--heading); border-bottom-color: var(--heading); }
+
+/* ============================================================
+   NARROW
+   ============================================================ */
+@media (max-width: 720px) {
+  .wrap { padding: 0 16px; }
+}
+@media (max-width: 560px) {
+  header.site .bar { gap: 0.55rem 1rem; min-height: 0; padding-block: 0.9rem; }
+  nav.top { margin-left: 0; width: 100%; gap: 1.1rem; }
+  nav.top #theme-toggle { margin-left: auto; }
+  .btn { width: 100%; }
+  .door { padding: 2.6rem 1.25rem 1.6rem; }
+  footer.site .made { margin-left: 0; }
 }
 
+/* ============================================================
+   REDUCED MOTION — the sheen freezes on a legible slice of the
+   spectrum rather than disappearing.
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .btn:hover, .door:hover { transform: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
   html { scroll-behavior: auto; }
+  .hero h1 .accent { animation: none; background-position: 40% 0; }
+}
+
+/* ============================================================
+   HIGH CONTRAST — the sheen sweeps through its palest stop,
+   which is thin against the white skin. Freeze it on the
+   strong slice for anyone who asked for more contrast.
+   ============================================================ */
+@media (prefers-contrast: more) {
+  .hero h1 .accent { animation: none; background-position: 40% 0; }
 }

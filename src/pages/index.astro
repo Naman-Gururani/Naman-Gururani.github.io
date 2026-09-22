@@ -29,26 +29,26 @@ const fmt = (d: Date) =>
   </section>
 
   <section class="doors" aria-label="Places">
-    <a class="door frame-sm" href="/lineage/">
-      <span class="glyph">🏝️</span>
+    <a class="card door" href="/lineage/">
+      <span class="serial">PS-001</span>
       <h3>The Island</h3>
       <p>An explorable pixel-art portfolio — day/night, quests, collectibles. Walk it, or skip straight to the good parts.</p>
       <span class="label">portfolio</span>
     </a>
-    <a class="door frame-sm" href="/blog/">
-      <span class="glyph">📖</span>
+    <a class="card door" href="/blog/">
+      <span class="serial">PS-002</span>
       <h3>The Library</h3>
       <p>Field notes on streaming data, exactly-once pipelines, marketplaces, and building things end to end.</p>
       <span class="label">blog</span>
     </a>
-    <a class="door frame-sm" href="https://github.com/naman-gururani">
-      <span class="glyph">⚒️</span>
+    <a class="card door" href="https://github.com/naman-gururani">
+      <span class="serial">PS-003</span>
       <h3>The Forge</h3>
       <p>Where the code lives. Some quests are public and polished; more are on the way.</p>
       <span class="label">github</span>
     </a>
-    <a class="door frame-sm" href="https://enlacey.com">
-      <span class="glyph">🛺</span>
+    <a class="card door" href="https://enlacey.com">
+      <span class="serial">PS-004</span>
       <h3>Enlacey</h3>
       <p>"There's always a guy who knows a guy. Now there's an app." A services marketplace for Haldwani — launching soon.</p>
       <span class="label">startup</span>
@@ -57,10 +57,10 @@ const fmt = (d: Date) =>
 
   {posts.length > 0 && (
     <section aria-label="Latest posts" style="margin-top: 3rem;">
-      <h2 class="head" style="font-size:1.5rem;">Fresh from the Library</h2>
+      <h2 class="head section-head">Fresh from the Library</h2>
       <ul class="posts">
         {posts.map((post) => (
-          <li class="post-card frame-sm">
+          <li class="post-card">
             <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
             <p class="meta">{fmt(post.data.pubDate)}</p>
             <p class="desc">{post.data.description}</p>

@@ -49,7 +49,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <body>
     <header class="site">
       <div class="wrap bar">
-        <a class="brand" href="/">NAMAN'S&nbsp;WORLD</a>
+        <a class="brand" href="/">NAMAN&nbsp;GURURANI</a>
         <nav class="top" aria-label="Site">
           <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
           <a href="/lineage/">Portfolio</a>
@@ -70,7 +70,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <span>© 2026 Naman Gururani</span>
         <a href="/rss.xml">RSS</a>
         <a href="mailto:gururaninaman@gmail.com">Email</a>
-        <span>Built with Astro · designed after <a href="/lineage/">Lineage Isle</a></span>
+        <span class="made">Built with Astro</span>
       </div>
     </footer>
 
@@ -83,7 +83,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           if (forced === 'white' || forced === 'black') return forced;
           return matchMedia('(prefers-color-scheme: light)').matches ? 'white' : 'black';
         };
-        const paint = () => { btn.textContent = '◧'; };
+        // A toggle has to show which skin is on: filled-left for black,
+        // filled-right for white.
+        const paint = () => { btn.textContent = effective() === 'black' ? '◧' : '◨'; };
         btn.addEventListener('click', () => {
           const next = effective() === 'black' ? 'white' : 'black';
           document.documentElement.dataset.theme = next;

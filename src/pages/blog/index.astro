@@ -23,7 +23,7 @@ const fmt = (d: Date) =>
 
   <ul class="posts">
     {posts.map((post) => (
-      <li class="post-card frame-sm">
+      <li class="post-card">
         <a class="title" href={`/blog/${post.id}/`}>{post.data.title}</a>
         <p class="meta">
           {fmt(post.data.pubDate)}

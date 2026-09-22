@@ -33,10 +33,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <script is:inline>
-      // Set before first paint to avoid theme flash.
+      // Set before first paint to avoid a flash. The old site stored
+      // day/night; those values still arrive from returning visitors, so they
+      // are migrated in place rather than ignored.
       try {
-        const t = localStorage.getItem('theme');
-        if (t === 'day' || t === 'night') document.documentElement.dataset.theme = t;
+        const raw = localStorage.getItem('theme');
+        const t = raw === 'day' ? 'white' : raw === 'night' ? 'black' : raw;
+        if (t === 'white' || t === 'black') {
+          document.documentElement.dataset.theme = t;
+          if (t !== raw) localStorage.setItem('theme', t);
+        }
       } catch {}
     </script>
   </head>
@@ -48,7 +54,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
           <a href="/lineage/">Portfolio</a>
           <a href="https://github.com/naman-gururani">GitHub</a>
-          <button id="theme-toggle" type="button" aria-label="Toggle day/night theme" title="Day / night">☾</button>
+          <button id="theme-toggle" type="button" aria-label="Toggle black/white skin" title="Black / white">◧</button>
         </nav>
       </div>
     </header>
@@ -74,12 +80,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         if (!btn) return;
         const effective = () => {
           const forced = document.documentElement.dataset.theme;
-          if (forced === 'day' || forced === 'night') return forced;
-          return matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+          if (forced === 'white' || forced === 'black') return forced;
+          return matchMedia('(prefers-color-scheme: light)').matches ? 'white' : 'black';
         };
-        const paint = () => { btn.textContent = effective() === 'night' ? '☀' : '☾'; };
+        const paint = () => { btn.textContent = '◧'; };
         btn.addEventListener('click', () => {
-          const next = effective() === 'night' ? 'day' : 'night';
+          const next = effective() === 'black' ? 'white' : 'black';
           document.documentElement.dataset.theme = next;
           try { localStorage.setItem('theme', next); } catch {}
           paint();

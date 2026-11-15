@@ -2,14 +2,17 @@
 title: "Building a portfolio you can walk around"
 description: "Why my portfolio is a pixel-art open world built with Phaser — and what one palette, a day/night cycle, and a Skip button taught me about shipping."
 pubDate: 2026-09-01
+updatedDate: 2026-11-16
 tags: ["phaser", "typescript", "design"]
 ---
 
 Most engineer portfolios are a hero section, three project cards, and a contact form. Mine is an island.
 
-[Lineage Isle](/portfolio/) is a small pixel-art open world built with [Phaser 3](https://phaser.io/) and TypeScript. You walk a little character around, wander into landmarks, and each one opens a part of my story — a cottage for the About page, a tower for my work experience, a workshop for skills, and a few buildings for projects. There's a day/night cycle, villagers, quests, and collectibles, because once you have a game engine running it is very hard to stop.
+[Lineage Isle](/portfolio/play/) is a small pixel-art open world built with [Phaser 3](https://phaser.io/) and TypeScript. You walk a little character around, wander into landmarks, and each one opens a part of my story — a cottage for the About page, a tower for my work experience, a workshop for skills, and a few buildings for projects. There's a day/night cycle, villagers, quests, and collectibles, because once you have a game engine running it is very hard to stop.
 
 This post is about the three decisions that mattered.
+
+*The island has since become a fairground and lives at [/portfolio/play/](/portfolio/play/), with a plain résumé at [/portfolio/](/portfolio/).*
 
 ## One palette to rule everything
 
@@ -37,4 +40,4 @@ The pattern I keep relearning: the version that exists beats the version that's 
 
 This blog is the island's Library. The next few field notes get more technical: one on **exactly-once event correlation across many Kafka topics with Redis** (the pattern behind a payment-correlation service I've built), and one on **Hinglish semantic search** — making a marketplace understand "*bijli wala chahiye*" — from [Enlacey](https://enlacey.com), the services app I'm building for my hometown.
 
-If any of that is your kind of thing, there's an [RSS feed](/rss.xml). And if you'd rather just poke the island — [it's right here](/portfolio/).
+If any of that is your kind of thing, there's an [RSS feed](/rss.xml). And if you'd rather just poke the island — [it's right here](/portfolio/play/).

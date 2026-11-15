@@ -1,6 +1,6 @@
 # naman-gururani.github.io
 
-The hub + blog for **Naman's World** — front page at the root, field notes under `/blog/`, and the playable portfolio living separately at [`/portfolio/`](https://naman-gururani.github.io/portfolio/). Design system is Printstream (Monochrome Pearlescence): matte black / stark white skins with a holographic accent and chamfered technical cards, toggled by the ◧/◨ button in the header.
+The hub + blog for **Naman's World** — front page at the root, field notes under `/blog/`, and the portfolio living separately at [`/portfolio/`](https://naman-gururani.github.io/portfolio/) (a plain résumé there, the playable fairground at [`/portfolio/play/`](https://naman-gururani.github.io/portfolio/play/)). Design system is Printstream (Monochrome Pearlescence): matte black / stark white skins with a holographic accent and chamfered technical cards, toggled by the ◧/◨ button in the header.
 
 ## Stack
 Astro 7 · content collections (markdown in `src/content/blog/`) · `@astrojs/rss` + sitemap · Fontsource (Geist Sans, Inter, JetBrains Mono) · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
@@ -33,4 +33,4 @@ npm run build     # output in dist/
    git remote add origin https://github.com/naman-gururani/naman-gururani.github.io.git
    git push -u origin main
    ```
-3. On GitHub: **Settings → Pages → Source: GitHub Actions.** The push triggers the deploy; the site appears at https://naman-gururani.github.io/ (the game is a separate project page at `/portfolio/`; `public/lineage/index.html` redirects the old address there, query and hash intact).
+3. On GitHub: **Settings → Pages → Source: GitHub Actions.** The push triggers the deploy; the site appears at https://naman-gururani.github.io/ (the résumé and the game are a separate project page at `/portfolio/` and `/portfolio/play/`; `public/lineage/index.html` redirects the old address to the game, query and hash intact).

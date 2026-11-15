@@ -18,7 +18,13 @@ function astroFiles(dir = 'src', out = []) {
 test('the redirect keeps the query and the hash', () => {
   assert.match(html, /location\.search/)
   assert.match(html, /location\.hash/)
-  assert.match(html, /\/portfolio\//)
+})
+
+test('old /lineage/ links land on the game at /portfolio/play/', () => {
+  // /portfolio/ is the résumé now; the game the old links meant is one level down.
+  assert.match(html, /location\.replace\('\/portfolio\/play\/' \+ location\.search \+ location\.hash\)/)
+  assert.match(html, /http-equiv="refresh" content="0; url=\/portfolio\/play\/"/)
+  assert.match(html, /rel="canonical" href="https:\/\/naman-gururani\.github\.io\/portfolio\/play\/"/)
 })
 
 test('no page still links to /lineage/', () => {

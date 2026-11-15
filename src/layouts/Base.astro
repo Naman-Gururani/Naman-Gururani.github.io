@@ -11,8 +11,13 @@ interface Props {
   title: string;
   description: string;
   current?: 'home' | 'blog';
+  /** 'article' for a blog post; every other page is a 'website'. */
+  ogType?: 'website' | 'article';
+  /** A post's dates, emitted as article:published_time / modified_time. */
+  publishedTime?: Date;
+  modifiedTime?: Date;
 }
-const { title, description, current } = Astro.props;
+const { title, description, current, ogType = 'website', publishedTime, modifiedTime } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -28,10 +33,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Naman's World — Blog" href="/rss.xml" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Naman's World" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {ogType === 'article' && <meta property="article:author" content="Naman Gururani" />}
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime.toISOString()} />
+    )}
+    {ogType === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime.toISOString()} />
+    )}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <script is:inline>
       // Set before first paint to avoid a flash. The old site stored
       // day/night; those values still arrive from returning visitors, so they
